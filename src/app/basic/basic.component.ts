@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Observer } from 'rxjs';
 
 @Component({
   selector: 'app-basic',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BasicComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    new Observable(
+      (observer: Observer<number>) => {
+        observer.next(1);
+        observer.next(2);
+        observer.next(3);
+        observer.next(4);
+        observer.next(5);
+        observer.error('error');
+        observer.complete();
+      }).subscribe(n => console.log(n),
+      error => console.error(error),
+      () => console.log('completed.'));
   }
 
 }
