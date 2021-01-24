@@ -1,0 +1,9 @@
+.box {
+  width: 250px;
+  min-height: 120px;
+  border: 1px;
+  border-color: deeppink;
+  border-style: solid;
+  padding: 20px;
+  margin: 10px;
+}
