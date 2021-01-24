@@ -28,7 +28,7 @@ export class SubjectsChildComponent implements OnInit {
   }
 
   connect(): void {
-    // this.logData('Connected!');
+    this.log.push('Connected!');
     this.connected = true;
     this.subscription = this.subject.subscribe((data: DataModel) => {
         this.logData(data);

@@ -18,7 +18,7 @@ export class GenRandomDataService {
         n++;
         console.log(n);
         if (n <= 10) {
-          const timestamp = Math.random() * 2000 + 500;
+          const timestamp = Math.round(Math.random() * 2000 + 500);
           observer.next({ timestamp, data: n });
           setTimeout(f, timestamp);
         } else {
