@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Observer, Subject } from 'rxjs';
+import { ConnectableObservable, Observable, Observer, Subject } from 'rxjs';
+import { publish } from 'rxjs/operators';
 
 @Component({
   selector: 'app-hot-observables',
@@ -29,7 +30,32 @@ export class HotObservablesComponent implements OnInit {
         i === 100 ? observer.complete() : observer.next(i);
       }, 1000);
     });
-    this.usingSubjects();
+    // this.usingSubjects();
+    this.usingPublish();
+  }
+
+  usingPublish(): void {
+    const multicasted: ConnectableObservable<number> = this.myObservable
+      .pipe(publish()) as ConnectableObservable<number>;
+
+    // Subscriber 1
+    this.s1 = 'waiting for interval...';
+    setTimeout(() => {
+      multicasted.subscribe(n => {
+        this.n1 = n;
+        this.s1 = 'OK';
+      });
+    }, 2000);
+
+    // Subscriber 2
+    this.s2 = 'waiting for interval...';
+    setTimeout(() => {
+      multicasted.connect();
+      multicasted.subscribe(n => {
+        this.n2 = n;
+        this.s2 = 'OK';
+      });
+    }, 4000);
   }
 
   usingSubjects(): void {
@@ -40,8 +66,8 @@ export class HotObservablesComponent implements OnInit {
     // Subscriber 1
     this.s1 = 'waiting for interval...';
     setTimeout(() => {
-      subject.subscribe(number => {
-        this.n1 = number;
+      subject.subscribe(n => {
+        this.n1 = n;
         this.s1 = 'OK';
       });
     }, 2000);
@@ -49,8 +75,8 @@ export class HotObservablesComponent implements OnInit {
     // Subscriber 2
     this.s2 = 'waiting for interval...';
     setTimeout(() => {
-      subject.subscribe(number => {
-        this.n2 = number;
+      subject.subscribe(n => {
+        this.n2 = n;
         this.s2 = 'OK';
       });
     }, 4000);
